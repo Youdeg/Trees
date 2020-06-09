@@ -19,7 +19,7 @@ public class Main {
         Tree y2 = new Tree();
         Tree u2 = new Tree();
 
-        int treeThisTurn = 0;
+        int treeThisTurn;
         int lifeBack = 0;
         int lifeAll = 0;
         while (true) {
@@ -36,7 +36,7 @@ public class Main {
             System.out.println("  Энергии после еды - " + Forest.energy);
             System.out.println("Деревьев - " + life + " (было " + lifeBack + ")" + " (за всё время - " + Forest.allTrees.size() + ")");
             Forest.getMean();
-            System.out.println("-----------------");
+            System.out.println("------------------");
             if (life == 0) {
                 System.out.println("Все вымерли :(");
                 break;
