@@ -7,6 +7,17 @@ public class Tree {
     private int inEnergy;
     private int maxAge;
     private int age;
+    private int altruistic;
+    private int doblueChild;
+    private int fertility;
+
+    public int getFetility() {
+        return fertility;
+    }
+
+    public int getAltruistic() {
+        return altruistic;
+    }
 
     public int getId() {
         return id;
@@ -44,6 +55,8 @@ public class Tree {
         this.size = NewMath.randomFromTo(10, 20);
         this.inEnergy = NewMath.randomFromTo(10, 20);
         this.maxAge = NewMath.randomFromTo(3, 20);
+        this.altruistic = NewMath.randomFromTo(10, 40);
+        this.fertility = NewMath.randomFromTo(0, 3);
 
         this.age = 0;
         this.status = 1;
@@ -70,9 +83,21 @@ public class Tree {
         this.maxAge = par.maxAge + NewMath.randomFromTo(0, 3);
         this.maxAge = par.maxAge - NewMath.randomFromTo(0, 3);
 
-        if (maxAge < 2){
+        if (maxAge < 2) {
             maxAge = 2;
         }
+
+        this.altruistic = par.altruistic + NewMath.randomFromTo(0, 10);
+        this.altruistic = par.altruistic - NewMath.randomFromTo(0, 10);
+
+        if (altruistic < 0) {
+            altruistic = 0;
+        } else if (altruistic > 100) {
+            altruistic = 100;
+        }
+
+        this.fertility = par.fertility + NewMath.randomFromTo(0, 2);
+        this.fertility = par.fertility - NewMath.randomFromTo(0, 2);
 
         this.age = 0;
         this.status = 1;
@@ -81,17 +106,25 @@ public class Tree {
     }
 
     public void nextTurn() {
-        int needEnergy = size * inEnergy * 10;
+        int needEnergy = size * inEnergy + fertility * 10;
         int getEnergy = inEnergy * size * 10;
-
+        int leftoverEnergy = 0;
         if (needEnergy > Forest.energy) {
             died();
             return;
         }
 
+        if (getEnergy > Forest.energy) {
+            getEnergy = Forest.energy;
+        }
+
         if (getEnergy >= needEnergy) {
-           Forest.energy = Forest.energy - (needEnergy + getEnergy);
-           if (Forest.energy < 0) Forest.energy = 0;
+            Forest.energy = Forest.energy - (needEnergy + (getEnergy - needEnergy) * altruistic / 100);
+            if (Forest.energy < 0) Forest.energy = 0;
+            leftoverEnergy = needEnergy + (getEnergy - needEnergy) * altruistic / 100;
+            for (int i = 0; i < leftoverEnergy / 100; i++) {
+                doblueChild++;
+            }
         } else {
             died();
             return;
@@ -102,7 +135,10 @@ public class Tree {
         }
 
         age++;
-        if (age == maxAge) { died(); return; }
+        if (age == maxAge) {
+            died();
+            return;
+        }
         Main.life++;
     }
 
@@ -111,7 +147,7 @@ public class Tree {
     }
 
     private void newTrees() {
-        for (int i = 0; i < NewMath.randomFromTo(0, 5); i++) {
+        for (int i = 0; i < NewMath.randomFromTo(0, 5 + doblueChild + fertility); i++) {
             Tree newTree = new Tree(this);
         }
     }

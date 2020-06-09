@@ -19,6 +19,7 @@ public class Main {
         Tree y2 = new Tree();
         Tree u2 = new Tree();
 
+        // int turn = 0;
         int treeThisTurn;
         int lifeBack = 0;
         int lifeAll = 0;
@@ -43,6 +44,7 @@ public class Main {
             }
             life = 0;
             lifeBack = 0;
+            // turn++;
             Thread.sleep(5000);
         }
     }
