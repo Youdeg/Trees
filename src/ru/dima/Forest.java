@@ -5,6 +5,15 @@ import java.util.List;
 
 public class Forest {
     public static int maxId = 0;
+    public static int withSex = 0;
+    public static int noSex = 0;
+    public static int life = 0;
+    public static int allMax = 0;
+    public static int allSize = 0;
+    public static int allIn = 0;
+    public static int allAltruistic = 0;
+    public static int allChildGenerate = 0;
+    public static int allBreeding = 0;
 
     public static int energy;
     public static List<Tree> allTrees = new ArrayList<Tree>();
@@ -15,35 +24,47 @@ public class Forest {
     }
 
     public static void generateEnergy() {
-        energy = NewMath.randomFromTo(10000, 50000);
+        energy = NewMath.randomFromTo(50000, 500000);
     }
 
     public static void getMean() {
-        int life = 0;
-        int allMax = 0;
-        int allSize = 0;
-        int allIn = 0;
-        int allAltruistic = 0;
-        int allChildGenerate = 0;
-
-        for (int i = 0; i < allTrees.size(); i++) {
-            if (Forest.allTrees.get(i).getStatus() == 0) continue;
-            allMax += Forest.allTrees.get(i).getMaxAge();
-            allSize += Forest.allTrees.get(i).getSize();
-            allIn += Forest.allTrees.get(i).getInEnergy();
-            allAltruistic += Forest.allTrees.get(i).getAltruistic();
-            allChildGenerate += Forest.allTrees.get(i).getFetility();
-            life++;
-        }
+        life = Main.life;
 
         int meanMaxAge = allMax / life;
         int meanSize = allSize / life;
         int meanIn = allIn / life;
         int meanAltruistic = 100 - allAltruistic / life;
         int meanChildGenerate = allChildGenerate / life;
+        int meanBreeding = allBreeding / life;
 
         System.out.println("Средняя продолжительность жизни - " + meanMaxAge + "   Средний альтруизм - " + meanAltruistic);
         System.out.println("Средний размер - " + meanSize + "   Средняя плодовитость - " + meanChildGenerate);
-        System.out.println("Средняя поглощаемость - " + meanIn);
+        System.out.println("Средняя поглощаемость - " + meanIn + " Статистика полового размножения - " + meanBreeding + "   (П - " + withSex + " Б - " + noSex + ")");
+
+        allMax = 0;
+        allSize = 0;
+        allIn = 0;
+        allAltruistic = 0;
+        allChildGenerate = 0;
+        allBreeding = 0;
+    }
+
+    public static Tree getParrent() {
+        for (int i = 0; i < 50; i++) {
+            Tree randomTree = randomTree();
+            if (randomTree.getSex() == 2) {
+                return randomTree;
+            }
+        }
+        return randomTree();
+    }
+
+    public static Tree randomTree() {
+        while (true) {
+            Tree randomTree = allTrees.get(NewMath.randomFromTo(0, allTrees.size() - 1));
+            if (randomTree.getStatus() == 1) {
+                return randomTree;
+            }
+        }
     }
 }

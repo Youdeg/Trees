@@ -19,11 +19,11 @@ public class Main {
         Tree y2 = new Tree();
         Tree u2 = new Tree();
 
-        // int turn = 0;
+        int turn = 0;
         int treeThisTurn;
         int lifeBack = 0;
         int lifeAll = 0;
-        while (true) {
+        while (turn < 50000) {
             Forest.generateEnergy();
             System.out.print("Энергии до еды - " + Forest.energy);
             treeThisTurn = Forest.allTrees.size();
@@ -44,8 +44,8 @@ public class Main {
             }
             life = 0;
             lifeBack = 0;
-            // turn++;
-            Thread.sleep(5000);
+            turn++;
+            // Thread.sleep(5000);
         }
     }
 }
